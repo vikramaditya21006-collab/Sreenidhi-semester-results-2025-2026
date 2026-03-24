@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Portal (Demo)</title>
+  <style>
+    body { font-family: Arial; background:#ffffff; margin:0; }
+    header { background:#0b3d91; color:white; padding:15px; text-align:center; }
+    .container { padding:20px; text-align:center; }
+    select, input, button { padding:10px; margin:10px; width:250px; }
+    .hidden { display:none; }
+    .error { color:red; font-weight:bold; }
+    #loader { display:none; font-size:18px; }
+    #finalPage { display:none; }
+    img { max-width:300px; margin-top:20px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>Student Academic Portal (Demo)</h2>
+</header>
+
+<div class="container" id="mainPage">
+
+  <h3>Select Academic Year</h3>
+  <select id="year" onchange="handleYear()">
+    <option value="">-- Select --</option>
+    <option value="1">2022-2026 (Fourth Year)</option>
+    <option value="2">2023-2027 (Third Year)</option>
+    <option value="3">2024-2028 (Second Year)</option>
+    <option value="4">2025-2029 (First Year)</option>
+  </select>
+
+  <p id="message" class="error"></p>
+
+  <div id="form" class="hidden">
+    <input type="text" id="roll" placeholder="Enter Roll Number (25311xxxxx)">
+
+    <select id="branch" onchange="updateSections()">
+      <option value="">Select Branch</option>
+      <option value="CSE">CSE</option>
+      <option value="IT">IT</option>
+      <option value="ECE">ECE</option>
+      <option value="ME">ME</option>
+      <option value="CE">CE</option>
+      <option value="EEE">EEE</option>
+      <option value="AI">AI/ML</option>
+      <option value="DS">IT/Data</option>
+    </select>
+
+    <select id="section" class="hidden"></select>
+
+    <br>
+    <input type="text" id="captcha" placeholder="Enter CAPTCHA: 5G7K9">
+    <br>
+    <input type="checkbox" id="terms"> Accept Terms & Conditions
+    <br>
+    <button onclick="submitForm()">Submit</button>
+  </div>
+
+  <div id="loader">⏳ Processing your result... Please wait</div>
+
+</div>
+
+<div class="container" id="finalPage">
+  <h2>😂 GOT YOU 😂</h2>
+  <p>This was just a prank website!</p>
+  <img src="https://i.imgur.com/8RKXAIV.jpeg">
+</div>
+
+<script>
+function handleYear(){
+  let year = document.getElementById("year").value;
+  let msg = document.getElementById("message");
+  let form = document.getElementById("form");
+
+  if(year === "1" || year === "2" || year === "3"){
+    msg.innerText = "Your result is still pending";
+    form.classList.add("hidden");
+  } else if(year === "4"){
+    msg.innerText = "";
+    form.classList.remove("hidden");
+  } else {
+    msg.innerText = "";
+    form.classList.add("hidden");
+  }
+}
+
+function updateSections(){
+  let branch = document.getElementById("branch").value;
+  let section = document.getElementById("section");
+
+  section.innerHTML = "";
+  section.classList.add("hidden");
+
+  if(branch === "CSE"){
+    section.classList.remove("hidden");
+    "ABCDEFGHI".split("").forEach(s=>{
+      section.innerHTML += `<option>${s}</option>`;
+    });
+  }
+  else if(branch === "ECE"){
+    section.classList.remove("hidden");
+    "ABCDEFG".split("").forEach(s=>{
+      section.innerHTML += `<option>${s}</option>`;
+    });
+  }
+  else if(branch === "AI"){
+    section.classList.remove("hidden");
+    "ABCDE".split("").forEach(s=>{
+      section.innerHTML += `<option>${s}</option>`;
+    });
+  }
+}
+
+function submitForm(){
+  let roll = document.getElementById("roll").value;
+  let terms = document.getElementById("terms").checked;
+  let captcha = document.getElementById("captcha").value;
+
+  if(!roll.startsWith("25311") || roll.length !== 10){
+    alert("Invalid roll number format");
+    return;
+  }
+
+  if(captcha !== "5G7K9"){
+    alert("Incorrect CAPTCHA");
+    return;
+  }
+
+  if(!terms){
+    alert("Accept terms first");
+    return;
+  }
+
+  document.getElementById("form").classList.add("hidden");
+  document.getElementById("loader").style.display = "block";
+
+  setTimeout(()=>{
+    document.getElementById("mainPage").style.display = "none";
+    document.getElementById("finalPage").style.display = "block";
+  }, 3000);
+}
+</script>
+
+</body>
+</html>
